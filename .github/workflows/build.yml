@@ -94,9 +94,27 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: 写入勾选的软件包
+        env:
+          INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
+          INCLUDE_PASSWALL: ${{ inputs.passwall && 'true' || 'false' }}
+          INCLUDE_MOSDNS: ${{ inputs.mosdns && 'true' || 'false' }}
+          INCLUDE_UPNP: ${{ inputs.upnp && 'true' || 'false' }}
+          INCLUDE_HOMEPROXY: ${{ inputs.homeproxy && 'true' || 'false' }}
+        run: bash ./scripts/apply-package-options.sh
+
       - name: 生成最终配置
         working-directory: openwrt
         run: make defconfig
+
+      - name: 检查勾选的软件包
+        env:
+          INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
+          INCLUDE_PASSWALL: ${{ inputs.passwall && 'true' || 'false' }}
+          INCLUDE_MOSDNS: ${{ inputs.mosdns && 'true' || 'false' }}
+          INCLUDE_UPNP: ${{ inputs.upnp && 'true' || 'false' }}
+          INCLUDE_HOMEPROXY: ${{ inputs.homeproxy && 'true' || 'false' }}
+        run: bash ./scripts/verify-package-options.sh
 
       - name: 下载源码包
         working-directory: openwrt
@@ -167,9 +185,27 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: 写入勾选的软件包
+        env:
+          INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
+          INCLUDE_PASSWALL: ${{ inputs.passwall && 'true' || 'false' }}
+          INCLUDE_MOSDNS: ${{ inputs.mosdns && 'true' || 'false' }}
+          INCLUDE_UPNP: ${{ inputs.upnp && 'true' || 'false' }}
+          INCLUDE_HOMEPROXY: ${{ inputs.homeproxy && 'true' || 'false' }}
+        run: bash ./scripts/apply-package-options.sh
+
       - name: 生成最终配置
         working-directory: openwrt
         run: make defconfig
+
+      - name: 检查勾选的软件包
+        env:
+          INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
+          INCLUDE_PASSWALL: ${{ inputs.passwall && 'true' || 'false' }}
+          INCLUDE_MOSDNS: ${{ inputs.mosdns && 'true' || 'false' }}
+          INCLUDE_UPNP: ${{ inputs.upnp && 'true' || 'false' }}
+          INCLUDE_HOMEPROXY: ${{ inputs.homeproxy && 'true' || 'false' }}
+        run: bash ./scripts/verify-package-options.sh
 
       - name: 下载源码包
         working-directory: openwrt

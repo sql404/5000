@@ -44,67 +44,9 @@ append_feed_once() {
   fi
 }
 
-append_config() {
-  cat >> "${SRC_DIR}/.config"
-}
-
 if [ "${INCLUDE_QMODEM}" = "true" ]; then
-  echo "启用 QModem 相关包"
+  echo "添加 QModem 软件源"
   append_feed_once "src-git qmodem https://github.com/FUjr/QModem.git"
-  append_config <<'EOF'
-CONFIG_PACKAGE_qmodem=y
-CONFIG_PACKAGE_luci-app-qmodem-next=y
-CONFIG_PACKAGE_luci-app-qmodem-monitor=y
-CONFIG_PACKAGE_luci-app-qmodem-ttlfw4=y
-CONFIG_PACKAGE_qmodem_monitor=y
-CONFIG_PACKAGE_modem_scan=y
-CONFIG_PACKAGE_ubus-at-daemon=y
-CONFIG_PACKAGE_tom_modem=y
-CONFIG_PACKAGE_sms-tool_q=y
-CONFIG_PACKAGE_sms-forwarder-next=y
-CONFIG_PACKAGE_qfirehose=y
-CONFIG_PACKAGE_ndisc6=y
-CONFIG_PACKAGE_quectel-CM-5G-M=y
-CONFIG_PACKAGE_kmod-pcie_mhi=y
-CONFIG_PACKAGE_kmod-qmi_wwan_q=y
-CONFIG_PACKAGE_kmod-qmi_wwan_f=y
-CONFIG_PACKAGE_kmod-qmi_wwan_s=y
-# CONFIG_PACKAGE_luci-app-qmodem is not set
-# CONFIG_PACKAGE_luci-app-qmodem-sms is not set
-# CONFIG_PACKAGE_luci-app-qmodem-ttl is not set
-# CONFIG_PACKAGE_luci-app-qmodem-mwan is not set
-# CONFIG_PACKAGE_luci-app-qmodem-hc is not set
-# CONFIG_PACKAGE_sms-forwarder is not set
-EOF
-fi
-
-if [ "${INCLUDE_PASSWALL}" = "true" ]; then
-  echo "启用 PassWall"
-  append_config <<'EOF'
-CONFIG_PACKAGE_luci-app-passwall=y
-EOF
-fi
-
-if [ "${INCLUDE_MOSDNS}" = "true" ]; then
-  echo "启用 MosDNS"
-  append_config <<'EOF'
-CONFIG_PACKAGE_luci-app-mosdns=y
-CONFIG_PACKAGE_mosdns=y
-EOF
-fi
-
-if [ "${INCLUDE_UPNP}" = "true" ]; then
-  echo "启用 UPnP"
-  append_config <<'EOF'
-CONFIG_PACKAGE_luci-app-upnp=y
-EOF
-fi
-
-if [ "${INCLUDE_HOMEPROXY}" = "true" ]; then
-  echo "启用 HomeProxy"
-  append_config <<'EOF'
-CONFIG_PACKAGE_luci-app-homeproxy=y
-EOF
 fi
 
 echo "写入默认 LAN IP、root 密码和软件源清理脚本"
@@ -118,6 +60,7 @@ echo "后续本地编译步骤："
 echo "  cd ${SRC_DIR}"
 echo "  ./scripts/feeds update -a"
 echo "  ./scripts/feeds install -a"
+echo "  INCLUDE_QMODEM=${INCLUDE_QMODEM} INCLUDE_PASSWALL=${INCLUDE_PASSWALL} INCLUDE_MOSDNS=${INCLUDE_MOSDNS} INCLUDE_UPNP=${INCLUDE_UPNP} INCLUDE_HOMEPROXY=${INCLUDE_HOMEPROXY} bash ${ROOT_DIR}/scripts/apply-package-options.sh"
 echo "  make defconfig"
 echo "  make download -j\$(nproc)"
 echo "  make -j\$(nproc)"
