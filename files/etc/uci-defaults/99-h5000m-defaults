@@ -11,8 +11,8 @@ uci -q set network.wan6.metric='10'
 uci -q delete network.wan5g
 uci -q delete network.wan5g6
 
-uci -q set network.1_1.metric='50'
-uci -q set network.1_1v6.metric='50'
+uci -q set network.USB.metric='50'
+uci -q set network.USBv6.metric='50'
 uci -q commit network
 
 logger -t h5000m-defaults "设置 root 默认密码"

@@ -3,7 +3,7 @@
 [ "${ACTION}" = "ifup" ] || [ "${ACTION}" = "ifupdate" ] || exit 0
 
 case "${INTERFACE}" in
-	wan|wan6|1_1|1_1v6)
+	wan|wan6|USB|USBv6)
 		;;
 	*)
 		exit 0
@@ -14,8 +14,8 @@ logger -t h5000m-wan-priority "同步 WAN 与 5G 备用出口优先级"
 
 uci -q set network.wan.metric='10'
 uci -q set network.wan6.metric='10'
-uci -q set network.1_1.metric='50'
-uci -q set network.1_1v6.metric='50'
+uci -q set network.USB.metric='50'
+uci -q set network.USBv6.metric='50'
 uci -q delete network.wan5g
 uci -q delete network.wan5g6
 uci -q commit network
