@@ -72,6 +72,20 @@ case "${mode}" in
 	modem_first)
 		wan_metric='50'
 		modem_metric='10'
+		wan_defaultroute='1'
+		modem_defaultroute='1'
+		usbv6_defaultroute='1'
+		;;
+	wan_only)
+		wan_metric='10'
+		modem_metric='50'
+		wan_defaultroute='1'
+		modem_defaultroute='0'
+		usbv6_defaultroute='0'
+		;;
+	modem_only)
+		wan_metric='50'
+		modem_metric='10'
 		wan_defaultroute='0'
 		modem_defaultroute='1'
 		usbv6_defaultroute='1'
@@ -81,8 +95,8 @@ case "${mode}" in
 		wan_metric='10'
 		modem_metric='50'
 		wan_defaultroute='1'
-		modem_defaultroute='0'
-		usbv6_defaultroute='0'
+		modem_defaultroute='1'
+		usbv6_defaultroute='1'
 		;;
 esac
 

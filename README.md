@@ -100,10 +100,12 @@ bash ./scripts/prepare-source.sh v24.10.6
 固件内置 `luci-app-h5000m-netmode`，可在 LuCI 的“网络 / 路由器出口优先级”
 中切换：
 
-- 有线 WAN 优先：`wan`/`wan6` metric 为 `10`，并开启默认路由；`USB`/`USBv6`
-  和 QModem modem-device metric 为 `50`，并关闭默认路由。
-- 5G 模块优先：`USB`/`USBv6` 和 QModem modem-device metric 为 `10`，
-  并开启默认路由；`wan`/`wan6` metric 为 `50`，并关闭默认路由。
+- 有线 WAN 优先，5G 备用：两边默认路由均开启，`wan`/`wan6` metric 为 `10`，
+  `USB`/`USBv6` 和 QModem modem-device metric 为 `50`。
+- 5G 模块优先，有线 WAN 备用：两边默认路由均开启，`USB`/`USBv6` 和
+  QModem modem-device metric 为 `10`，`wan`/`wan6` metric 为 `50`。
+- 仅有线 WAN：只开启 `wan`/`wan6` 默认路由。
+- 仅 5G 模块：只开启 `USB`/`USBv6` 默认路由。
 
 固件内置 `luci-app-h5000m-fancontrol`，可在 LuCI 的“服务 / 风扇控制”
 中设置：

@@ -25,7 +25,13 @@ return view.extend({
 	},
 
 	statusTable: function(data) {
-		var mode = data.mode == 'modem_first' ? _('5G 模块优先') : _('有线 WAN 优先');
+		var labels = {
+			wan_first: _('有线 WAN 优先，5G 备用'),
+			modem_first: _('5G 模块优先，有线 WAN 备用'),
+			wan_only: _('仅有线 WAN'),
+			modem_only: _('仅 5G 模块')
+		};
+		var mode = labels[data.mode] || labels.wan_first;
 
 		return E('div', { 'class': 'cbi-section' }, [
 			E('h3', _('当前状态')),
@@ -52,8 +58,10 @@ return view.extend({
 		s.anonymous = true;
 
 		o = s.option(form.ListValue, 'mode', _('出口模式'));
-		o.value('wan_first', _('有线 WAN 优先'));
-		o.value('modem_first', _('5G 模块优先'));
+		o.value('wan_first', _('有线 WAN 优先，5G 备用'));
+		o.value('modem_first', _('5G 模块优先，有线 WAN 备用'));
+		o.value('wan_only', _('仅有线 WAN'));
+		o.value('modem_only', _('仅 5G 模块'));
 		o.default = 'wan_first';
 		o.rmempty = false;
 
