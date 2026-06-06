@@ -8,6 +8,7 @@ DTS = r'''// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 /dts-v1/;
 #include "mt7987a.dtsi"
 #include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	model = "Hiveton H5000M";
@@ -59,21 +60,6 @@ DTS = r'''// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 			color = <LED_COLOR_ID_BLUE>;
 			gpios = <&pio 4 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "phy1tpt";
-		};
-	};
-
-	pwm_led: pwm-leds {
-		compatible = "pwm-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pwm_pins>;
-		status = "okay";
-
-		led {
-			label = "pwm_led";
-			pwms = <&pwm 0 50000 0>;
-			max-brightness = <255>;
-			active-low;
-			linux,default-trigger = "default-on";
 		};
 	};
 
@@ -206,13 +192,6 @@ DTS = r'''// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 };
 
 &pio {
-	pwm_pins: pwm-pins {
-		mux {
-			function = "pwm";
-			groups = "pwm0";
-		};
-	};
-
 	pwm_fan_pins: pwm-fan-pins {
 		mux {
 			function = "pwm";
@@ -251,8 +230,7 @@ define Device/hiveton_h5000m
   DEVICE_ALT0_MODEL := H5000M
   DEVICE_DTS := mt7987a-hiveton-h5000m
   DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-hwmon-pwmfan kmod-leds-gpio kmod-leds-pwm \
-	kmod-usb3 mt7987-2p5g-phy-firmware \
+  DEVICE_PACKAGES := kmod-hwmon-pwmfan kmod-usb3 mt7987-2p5g-phy-firmware \
 	kmod-mt7996e kmod-mt7992-23-firmware f2fsck mkf2fs
   KERNEL_LOADADDR := 0x40000000
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
@@ -320,12 +298,11 @@ def main() -> int:
     write(dts_path, DTS + "\n")
 
     network = root / "target/linux/mediatek/filogic/base-files/etc/board.d/02_network"
-    leds = root / "target/linux/mediatek/filogic/base-files/etc/board.d/01_leds"
     wifi_mac = root / "target/linux/mediatek/filogic/base-files/etc/hotplug.d/ieee80211/11_fix_wifi_mac"
     platform = root / "target/linux/mediatek/filogic/base-files/lib/upgrade/platform.sh"
     filogic = root / "target/linux/mediatek/image/filogic.mk"
 
-    for path in (network, leds, wifi_mac, platform, filogic):
+    for path in (network, wifi_mac, platform, filogic):
         require(path)
 
     text = read(network)
@@ -348,22 +325,6 @@ def main() -> int:
         else:
             text = text.replace("\tmercusys,mr80x-v3|\\\n", mac_case + "\tmercusys,mr80x-v3|\\\n", 1)
     write(network, text)
-
-    text = read(leds)
-    led_case = '''\thiveton,h5000m)
-\t\tucidef_set_led_netdev "wifi2g" "WiFi2G" "amber:wlan-2ghz" "phy0-ap0" "link tx rx"
-\t\tucidef_set_led_netdev "wifi5g" "WiFi5G" "blue:wlan-5ghz" "phy1-ap0" "link tx rx"
-\t\tucidef_set_led_default "pwm_led" "PWM LED" "pwm_led" "1"
-\t\t;;
-'''
-    if "\thiveton,h5000m)" not in text:
-        for marker in ("\topenembed,som7981)", "\tnetgear,wax220)", "\thuasifei,wh3000)"):
-            if marker in text:
-                text = text.replace(marker, led_case + marker, 1)
-                break
-        else:
-            text = insert_before_case_end(text, led_case, "LED defaults")
-    write(leds, text)
 
     text = read(wifi_mac)
     wifi_case = '''\thiveton,h5000m)

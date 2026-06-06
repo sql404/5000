@@ -34,6 +34,10 @@ require_config "CONFIG_PACKAGE_luci-ssl"
 require_config "CONFIG_PACKAGE_luci-base"
 require_config "CONFIG_PACKAGE_rpcd-mod-luci"
 require_config "CONFIG_PACKAGE_uhttpd"
+require_config "CONFIG_PACKAGE_luci-app-package-manager"
+require_config "CONFIG_PACKAGE_luci-i18n-base-zh-cn"
+require_config "CONFIG_PACKAGE_luci-i18n-firewall-zh-cn"
+require_config "CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn"
 require_config "CONFIG_PACKAGE_luci-app-h5000m-fancontrol"
 require_config "CONFIG_PACKAGE_luci-app-h5000m-netmode"
 
@@ -42,6 +46,9 @@ if [ "${INCLUDE_QMODEM}" = "true" ]; then
   require_config "CONFIG_PACKAGE_luci-app-qmodem-next"
   require_config "CONFIG_PACKAGE_luci-app-qmodem-monitor"
   require_config "CONFIG_PACKAGE_luci-app-qmodem-ttlfw4"
+  require_config "CONFIG_PACKAGE_luci-i18n-qmodem-next-zh-cn"
+  require_config "CONFIG_PACKAGE_luci-i18n-qmodem-monitor-zh-cn"
+  require_config "CONFIG_PACKAGE_luci-i18n-qmodem-ttlfw4-zh-cn"
   require_config "CONFIG_PACKAGE_qmodem_monitor"
   require_config "CONFIG_PACKAGE_modem_scan"
   require_config "CONFIG_PACKAGE_ubus-at-daemon"
@@ -59,6 +66,7 @@ fi
 
 if [ "${INCLUDE_UPNP}" = "true" ]; then
   require_config "CONFIG_PACKAGE_luci-app-upnp"
+  require_config "CONFIG_PACKAGE_luci-i18n-upnp-zh-cn"
 fi
 
 if [ "${INCLUDE_PASSWALL}" = "true" ]; then

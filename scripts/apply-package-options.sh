@@ -27,6 +27,9 @@ CONFIG_PACKAGE_qmodem=y
 CONFIG_PACKAGE_luci-app-qmodem-next=y
 CONFIG_PACKAGE_luci-app-qmodem-monitor=y
 CONFIG_PACKAGE_luci-app-qmodem-ttlfw4=y
+CONFIG_PACKAGE_luci-i18n-qmodem-next-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-qmodem-monitor-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-qmodem-ttlfw4-zh-cn=y
 CONFIG_PACKAGE_qmodem_monitor=y
 CONFIG_PACKAGE_modem_scan=y
 CONFIG_PACKAGE_ubus-at-daemon=y
@@ -56,6 +59,7 @@ if [ "${INCLUDE_UPNP}" = "true" ]; then
   echo "启用 UPnP"
   append_config <<'EOF'
 CONFIG_PACKAGE_luci-app-upnp=y
+CONFIG_PACKAGE_luci-i18n-upnp-zh-cn=y
 EOF
 fi
 
