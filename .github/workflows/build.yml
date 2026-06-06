@@ -100,6 +100,9 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: 修复第三方 feed
+        run: bash ./scripts/patch-feeds.sh
+
       - name: 写入插件选择
         env:
           INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
@@ -213,6 +216,9 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+
+      - name: 修复第三方 feed
+        run: bash ./scripts/patch-feeds.sh
 
       - name: 写入插件选择
         env:
