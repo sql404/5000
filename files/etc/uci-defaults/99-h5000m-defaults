@@ -18,10 +18,36 @@ if [ -f /etc/config/luci ]; then
 	uci -q commit luci
 fi
 
+read_uboot_env() {
+	local key="$1"
+	[ -e /dev/mmcblk0p1 ] || return 1
+	tr '\0' '\n' < /dev/mmcblk0p1 | sed -n "s/^${key}=//p" | head -n 1
+}
+
+valid_mac() {
+	echo "$1" | grep -Eq '^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}$'
+}
+
 logger -t h5000m-defaults "设置默认 LAN 地址为 192.168.10.1"
 uci -q set network.lan.proto='static'
 uci -q set network.lan.ipaddr='192.168.10.1'
 uci -q set network.lan.netmask='255.255.255.0'
+
+logger -t h5000m-defaults "从 U-Boot 环境写入默认 MAC 地址"
+lan_mac="$(read_uboot_env ethaddr || true)"
+wan_mac="$(read_uboot_env eth1addr || true)"
+if valid_mac "${lan_mac}" && valid_mac "${wan_mac}"; then
+	uci -q set network.eth0_dev='device'
+	uci -q set network.eth0_dev.name='eth0'
+	uci -q set network.eth0_dev.macaddr="${lan_mac}"
+	uci -q set network.eth1_dev='device'
+	uci -q set network.eth1_dev.name='eth1'
+	uci -q set network.eth1_dev.macaddr="${wan_mac}"
+	uci -q set network.wan.macaddr="${wan_mac}"
+	uci -q commit network
+else
+	logger -t h5000m-defaults "U-Boot MAC 地址无效或不存在，保留系统默认 MAC"
+fi
 
 logger -t h5000m-defaults "写入 H5000M QModem 默认槽位"
 if [ -f /etc/config/qmodem ]; then

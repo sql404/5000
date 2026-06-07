@@ -335,8 +335,10 @@ def main() -> int:
         else:
             text = insert_once(text, "\topenembed,som7981|\\\n", h5000m_case, "network interface")
     mac_case = '''\thiveton,h5000m)
-\t\tlan_mac=$(macaddr_generate_from_mmc_cid mmcblk0)
-\t\twan_mac=$(macaddr_add "$lan_mac" 1)
+\t\tlan_mac=$(tr '\\0' '\\n' < /dev/mmcblk0p1 | sed -n 's/^ethaddr=//p' | head -n 1)
+\t\twan_mac=$(tr '\\0' '\\n' < /dev/mmcblk0p1 | sed -n 's/^eth1addr=//p' | head -n 1)
+\t\t[ -n "$lan_mac" ] || lan_mac=$(macaddr_generate_from_mmc_cid mmcblk0)
+\t\t[ -n "$wan_mac" ] || wan_mac=$(macaddr_add "$lan_mac" 1)
 \t\tlabel_mac=$wan_mac
 \t\t;;
 '''
@@ -349,7 +351,8 @@ def main() -> int:
 
     text = read(wifi_mac)
     wifi_case = '''\thiveton,h5000m)
-\t\tbase_mac=$(macaddr_generate_from_mmc_cid mmcblk0)
+\t\tbase_mac=$(tr '\\0' '\\n' < /dev/mmcblk0p1 | sed -n 's/^ethaddr=//p' | head -n 1)
+\t\t[ -n "$base_mac" ] || base_mac=$(macaddr_generate_from_mmc_cid mmcblk0)
 \t\t[ "$PHYNBR" = "0" ] && macaddr_add $base_mac 2 > /sys${DEVPATH}/macaddress
 \t\t[ "$PHYNBR" = "1" ] && macaddr_add $base_mac 3 > /sys${DEVPATH}/macaddress
 \t\t;;
