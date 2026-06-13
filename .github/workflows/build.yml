@@ -50,6 +50,9 @@ on:
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-github-hosted:
     name: GitHub 托管机编译
