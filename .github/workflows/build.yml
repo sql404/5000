@@ -116,7 +116,19 @@ jobs:
           INCLUDE_VNSTAT: ${{ inputs.vnstat && 'true' || 'false' }}
           INCLUDE_MT5700M: ${{ inputs.mt5700m && 'true' || 'false' }}
         run: |
-          ./scripts/feeds update -a
+          for attempt in 1 2 3; do
+            if ./scripts/feeds update -a; then
+              break
+            fi
+
+            echo "软件源更新失败，清理 small_package 中未使用且可能损坏的 webd 包后重试：${attempt}/3"
+            rm -rf feeds/small_package/webd
+            if [ "${attempt}" = "3" ]; then
+              echo "软件源更新重试失败。"
+              exit 1
+            fi
+            sleep 5
+          done
           cd ..
           bash ./scripts/install-feeds.sh
 
