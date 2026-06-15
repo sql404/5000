@@ -72,6 +72,29 @@ def deep_merge(default: dict, custom: dict) -> dict:
             result[key] = value
     return result
 
+def detect_modem_gateway() -> str:
+    """Detect the gateway exposed by the MT5700M data interface."""
+    import subprocess
+
+    try:
+        result = subprocess.run(['ip', '-4', 'route', 'show', 'default'],
+                                capture_output=True, text=True, timeout=2)
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                if any(dev in line for dev in (' dev eth2', ' dev usb', ' dev USB', ' dev wwan', ' dev rmnet', ' dev mhi')):
+                    parts = line.split()
+                    if 'via' in parts:
+                        return parts[parts.index('via') + 1]
+
+        result = subprocess.run(['ip', '-4', 'route', 'show', '10.0.0.0/8'],
+                                capture_output=True, text=True, timeout=2)
+        if result.returncode == 0 and result.stdout.strip():
+            return '10.0.0.1'
+    except Exception as e:
+        logger.debug(f"Detect modem gateway failed: {e}")
+
+    return ''
+
 def load_config():
     """从 UCI 加载配置（优化版：一次性读取所有配置）"""
     import subprocess
@@ -114,7 +137,10 @@ def load_config():
 
         # 读取网络配置（从 uci_data 字典读取，无需额外子进程）
         if conn_type == 'NETWORK':
-            host = uci_data.get('network_host', '192.168.8.1')
+            host = uci_data.get('network_host', '10.0.0.1')
+            gateway = detect_modem_gateway()
+            if gateway and host in ('', '192.168.8.1', '10.0.0.1'):
+                host = gateway
             port = int(uci_data.get('network_port', '20249'))
             timeout = int(uci_data.get('network_timeout', '10'))
 
