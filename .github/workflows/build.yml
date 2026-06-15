@@ -180,6 +180,10 @@ jobs:
             make download -j"$(nproc)"
           fi
 
+      - name: Prebuild host ninja
+        working-directory: openwrt
+        run: make tools/ninja/compile -j1
+
       - name: 编译固件
         id: compile
         working-directory: openwrt

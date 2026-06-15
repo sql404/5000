@@ -33,6 +33,21 @@ patch_python_build_backend() {
   echo "Patched ${package_name} feed package to provide setuptools build backend."
 }
 
+patch_luci_mosdns_jsmin() {
+  local makefile="${SRC_DIR}/package/feeds/small_package/luci-app-mosdns/Makefile"
+
+  [ -f "${makefile}" ] || return 0
+
+  if grep -q '^LUCI_MINIFY_JS:=0' "${makefile}"; then
+    echo "luci-app-mosdns jsmin patch already applied."
+    return 0
+  fi
+
+  sed -i '/^LUCI_PKGARCH:=/a LUCI_MINIFY_JS:=0' "${makefile}"
+  echo "Patched luci-app-mosdns to skip JS minification."
+}
+
 patch_tcping
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-pyserial/Makefile" "python-pyserial"
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-websockets/Makefile" "python-websockets"
+patch_luci_mosdns_jsmin
