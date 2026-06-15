@@ -59,18 +59,12 @@ if [ "${INCLUDE_QMODEM}" = "true" ]; then
   echo "启用 QModem"
   append_config <<'EOF'
 CONFIG_PACKAGE_qmodem=y
-CONFIG_PACKAGE_luci-app-qmodem-next=y
-CONFIG_PACKAGE_luci-app-qmodem-monitor=y
-CONFIG_PACKAGE_luci-app-qmodem-ttlfw4=y
-CONFIG_PACKAGE_luci-i18n-qmodem-next-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-qmodem-monitor-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-qmodem-ttlfw4-zh-cn=y
-CONFIG_PACKAGE_qmodem_monitor=y
+CONFIG_PACKAGE_luci-app-qmodem=y
+CONFIG_PACKAGE_luci-i18n-qmodem-zh-cn=y
 CONFIG_PACKAGE_modem_scan=y
 CONFIG_PACKAGE_ubus-at-daemon=y
 CONFIG_PACKAGE_tom_modem=y
 CONFIG_PACKAGE_sms-tool_q=y
-CONFIG_PACKAGE_sms-forwarder-next=y
 CONFIG_PACKAGE_qfirehose=y
 CONFIG_PACKAGE_ndisc6=y
 CONFIG_PACKAGE_quectel-CM-5G-M=y
@@ -78,15 +72,23 @@ CONFIG_PACKAGE_kmod-pcie_mhi=y
 CONFIG_PACKAGE_kmod-qmi_wwan_q=y
 CONFIG_PACKAGE_kmod-qmi_wwan_f=y
 CONFIG_PACKAGE_kmod-qmi_wwan_s=y
+CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_ndisc6=y
+# CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_rdisc6 is not set
+# CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_no_ndisc_rdisc6 is not set
+CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_vendor-qmi-wwan=y
+# CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_generic-qmi-wwan is not set
 CONFIG_PACKAGE_luci-app-qmodem_USE_TOM_CUSTOMIZED_QUECTEL_CM=y
 # CONFIG_PACKAGE_luci-app-qmodem_USING_QWRT_QUECTEL_CM_5G is not set
 # CONFIG_PACKAGE_luci-app-qmodem_GENERIC_MHI_PCIe_DRIVER is not set
-# CONFIG_PACKAGE_luci-app-qmodem is not set
+# CONFIG_PACKAGE_luci-app-qmodem-next is not set
+# CONFIG_PACKAGE_luci-app-qmodem-monitor is not set
 # CONFIG_PACKAGE_luci-app-qmodem-sms is not set
 # CONFIG_PACKAGE_luci-app-qmodem-ttl is not set
+# CONFIG_PACKAGE_luci-app-qmodem-ttlfw4 is not set
 # CONFIG_PACKAGE_luci-app-qmodem-mwan is not set
 # CONFIG_PACKAGE_luci-app-qmodem-hc is not set
 # CONFIG_PACKAGE_sms-forwarder is not set
+# CONFIG_PACKAGE_sms-forwarder-next is not set
 EOF
 fi
 
