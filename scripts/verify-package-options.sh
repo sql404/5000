@@ -36,12 +36,26 @@ optional_config() {
   fi
 }
 
+reject_config() {
+  local symbol="$1"
+
+  if grep -qx "${symbol}=y" "${CONFIG_FILE}"; then
+    echo "冲突：${symbol}=y 不应开启"
+    missing=1
+  else
+    echo "已确认：${symbol} 未开启"
+  fi
+}
+
 if [ ! -f "${CONFIG_FILE}" ]; then
   echo "未找到 OpenWrt 配置文件：${CONFIG_FILE}"
   exit 1
 fi
 
 echo "检查 defconfig 后的最终勾选项"
+
+reject_config "CONFIG_GDB"
+reject_config "CONFIG_GDB_PYTHON"
 
 optional_config "CONFIG_PACKAGE_luci"
 optional_config "CONFIG_PACKAGE_luci-ssl"

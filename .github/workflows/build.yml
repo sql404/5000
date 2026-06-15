@@ -162,6 +162,13 @@ jobs:
         working-directory: openwrt
         run: make defconfig
 
+      - name: 关闭调试工具链
+        working-directory: openwrt
+        run: |
+          ./scripts/config --file .config --disable GDB
+          ./scripts/config --file .config --disable GDB_PYTHON
+          make defconfig
+
       - name: 检查插件
         env:
           INCLUDE_QMODEM: ${{ inputs.qmodem && 'true' || 'false' }}
