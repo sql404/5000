@@ -11,7 +11,7 @@ msgid "Current Status"
 msgstr "当前状态"
 
 msgid "Fan Speed"
-msgstr "风扇转速"
+msgstr "风扇速度"
 
 msgid "Current PWM"
 msgstr "当前 PWM"
@@ -33,6 +33,15 @@ msgstr "未知"
 
 msgid "No RPM feedback"
 msgstr "无转速反馈"
+
+msgid "PWM percentage unavailable"
+msgstr "PWM 百分比不可用"
+
+msgid "RPM feedback unavailable, showing PWM percentage"
+msgstr "无转速反馈，显示 PWM 百分比"
+
+msgid "No RPM feedback node was found. The fan speed card is showing the current PWM percentage instead."
+msgstr "未找到转速反馈节点。风扇速度卡片当前显示 PWM 百分比。"
 
 msgid "PWM node not found"
 msgstr "未找到 PWM 节点"

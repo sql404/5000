@@ -51,8 +51,14 @@ return view.extend({
 		if (data.fan_rpm)
 			return _('%s RPM').format(data.fan_rpm);
 
-		if (data.fan_feedback === '0')
-			return _('No RPM feedback');
+		if (data.fan_feedback === '0') {
+			var pwm = this.toNum(data.pwm_value, NaN);
+
+			if (!isNaN(pwm))
+				return _('%s%% PWM').format(Math.round(this.clamp(pwm, 0, 255) * 100 / 255));
+
+			return _('PWM percentage unavailable');
+		}
 
 		return _('Unknown');
 	},
@@ -92,7 +98,7 @@ return view.extend({
 
 	statusPanel: function(data) {
 		var pwmHint = data.pwm ? data.pwm.replace('/sys/class/hwmon/', '') : _('PWM node not found');
-		var fanHint = data.fan_feedback === '0' ? _('Current driver does not expose fan_input') : (data.fan || '');
+		var fanHint = data.fan_feedback === '0' ? _('RPM feedback unavailable, showing PWM percentage') : (data.fan || '');
 
 		return E('div', { 'class': 'h5000m-fan-status' }, [
 			E('h3', _('Current Status')),
@@ -105,7 +111,7 @@ return view.extend({
 				this.statusCard(_('WiFi Temperature 2'), this.formatTemp(data.wifi2_temp), data.temp3_label || '')
 			]),
 			data.fan_feedback === '0'
-				? E('div', { 'class': 'h5000m-fan-note' }, _('The current system only provides PWM control and does not expose a fan speed feedback node.'))
+				? E('div', { 'class': 'h5000m-fan-note' }, _('No RPM feedback node was found. The fan speed card is showing the current PWM percentage instead.'))
 				: null
 		]);
 	},
