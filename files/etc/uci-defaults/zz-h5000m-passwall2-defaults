@@ -12,7 +12,7 @@ fi
 
 cat > "${PASSWALL2_CONFIG}" <<'EOF'
 config global
-	option enabled '1'
+	option enabled '0'
 	option node_socks_port '1070'
 	option localhost_proxy '1'
 	option client_proxy '1'
