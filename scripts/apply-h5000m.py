@@ -87,10 +87,6 @@ DTS = r'''// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 };
 
 &fan {
-	cooling-levels = <0 10 20 30 40 50 60 70 80 90 100 110 120
-			  130 140 150 160 170 180 190 200 210 220 240 255>;
-	#cooling-cells = <2>;
-	#thermal-sensor-cells = <1>;
 	pwms = <&pwm 1 50000 0>;
 	status = "okay";
 };
