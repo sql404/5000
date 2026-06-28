@@ -32,7 +32,7 @@ CONFIG_LUCI_LANG_zh_Hans=y
 CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-firewall-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn=y
+# CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn is not set
 CONFIG_PACKAGE_luci-i18n-h5000m-fancontrol-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-h5000m-netmode-zh-cn=y
 CONFIG_PACKAGE_kmod-usb-net=y
