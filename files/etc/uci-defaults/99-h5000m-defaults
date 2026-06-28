@@ -80,9 +80,9 @@ get_base_mac() {
 	return 1
 }
 
-logger -t h5000m-defaults "Set default LAN address to 192.168.10.1"
+logger -t h5000m-defaults "Set default LAN address to 10.0.0.1"
 uci -q set network.lan.proto='static'
-uci -q set network.lan.ipaddr='192.168.10.1'
+uci -q set network.lan.ipaddr='10.0.0.1'
 uci -q set network.lan.netmask='255.255.255.0'
 
 logger -t h5000m-defaults "Apply official H5000M Ethernet layout: eth1 LAN, eth0 WAN"
