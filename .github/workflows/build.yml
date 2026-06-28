@@ -26,14 +26,14 @@ on:
         default: false
       qmodem_original:
         description: "1. QModem 原版：5G 模块管理"
-        required: true
+        required: false
         type: boolean
-        default: true
+        default: false
       qmodem_next:
         description: "2. QModem Next：新版界面和扩展功能"
         required: true
         type: boolean
-        default: false
+        default: true
       upnp:
         description: "3. UPnP：端口自动映射"
         required: true
@@ -41,17 +41,17 @@ on:
         default: true
       passwall2:
         description: "4. PassWall2：代理与分流"
-        required: true
+        required: false
         type: boolean
-        default: true
+        default: false
       homeproxy:
         description: "5. HomeProxy：代理插件"
         required: true
         type: boolean
-        default: false
+        default: true
       mosdns:
         description: "6. MosDNS：DNS 分流插件"
-        required: true
+        required: false
         type: boolean
         default: false
       vnstat:
@@ -61,14 +61,14 @@ on:
         default: true
       mt5700m:
         description: "8. MT5700M：原生管理页面"
-        required: true
+        required: false
         type: boolean
-        default: true
+        default: false
       eeprom_autoflash:
         description: "9. EEPROM：首次启动自动写入 WiFi 校准数据"
         required: true
         type: boolean
-        default: false
+        default: true
       create_release:
         description: 发布 Releases
         required: true
