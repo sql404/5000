@@ -25,15 +25,6 @@ inject_luci_theme_argon() {
   fi
 }
 
-  # 2. 注入配套的后台设置插件
-  if [ -d "${argon_config_dir}" ]; then
-    echo "luci-app-argon-config source already exists, skipping clone."
-  else
-    echo "Injecting luci-app-argon-config source..."
-    git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config.git "${argon_config_dir}"
-  fi
-}
-
 patch_tcping() {
   local makefile="${SRC_DIR}/package/feeds/small_package/tcping/Makefile"
 
