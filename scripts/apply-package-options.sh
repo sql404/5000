@@ -42,9 +42,18 @@ CONFIG_PACKAGE_rpcd-mod-rrdns=y
 CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-firewall-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn=y
+#CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn is not set
 CONFIG_PACKAGE_luci-i18n-h5000m-fancontrol-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-h5000m-netmode-zh-cn=y
+# === 新增：Argon 主题与配置后台 ===
+CONFIG_PACKAGE_luci-theme-argon=y
+CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
+# === 新增：SFTP 文件管理 ===
+CONFIG_PACKAGE_openssh-sftp-server=y
+# === 新增：SSL 证书与 Web HTTPS 支持 ===
+CONFIG_PACKAGE_uhttpd-mod-tls=y
+CONFIG_PACKAGE_px5g-standalone=y
 EOF
 
 if [ "${INCLUDE_MT5700M}" = "true" ]; then
