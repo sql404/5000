@@ -4,6 +4,36 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_DIR="${ROOT_DIR}/openwrt"
 
+inject_luci_theme_argon() {
+  local argon_dir="${SRC_DIR}/package/luci-theme-argon"
+  local argon_config_dir="${SRC_DIR}/package/luci-app-argon-config"
+
+  # 1. 注入 luci-theme-argon 主题 (使用适配 OpenWrt 25.12 现代 LuCI 的 master 分支)
+  if [ -d "${argon_dir}" ]; then
+    echo "luci-theme-argon source already exists, skipping clone."
+  else
+    echo "Injecting luci-theme-argon source (master branch)..."
+    git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git "${argon_dir}"
+  fi
+
+  # 2. 注入配套的后台设置插件 (同样拉取主线 master)
+  if [ -d "${argon_config_dir}" ]; then
+    echo "luci-app-argon-config source already exists, skipping clone."
+  else
+    echo "Injecting luci-app-argon-config source..."
+    git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config.git "${argon_config_dir}"
+  fi
+}
+
+  # 2. 注入配套的后台设置插件
+  if [ -d "${argon_config_dir}" ]; then
+    echo "luci-app-argon-config source already exists, skipping clone."
+  else
+    echo "Injecting luci-app-argon-config source..."
+    git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config.git "${argon_config_dir}"
+  fi
+}
+
 patch_tcping() {
   local makefile="${SRC_DIR}/package/feeds/small_package/tcping/Makefile"
 
@@ -43,7 +73,7 @@ patch_luci_mosdns_jsmin() {
     return 0
   fi
 
-  sed -i '/^LUCI_PKGARCH:=/a LUCI_MINIFY_JS:=0' "${makefile}"
+  sed -i '/^LUCI_MINIFY_JS:=/a LUCI_MINIFY_JS:=0' "${makefile}"
   echo "Patched luci-app-mosdns to skip JS minification."
 }
 
@@ -65,6 +95,8 @@ patch_passwall2_nftset_empty_insert() {
   fi
 }
 
+# --- 执行区 ---
+inject_luci_theme_argon
 patch_tcping
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-pyserial/Makefile" "python-pyserial"
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-websockets/Makefile" "python-websockets"
