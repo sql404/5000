@@ -51,9 +51,9 @@ CONFIG_PACKAGE_luci-app-argon-config=y
 CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
 # === 新增：SFTP 文件管理 ===
 CONFIG_PACKAGE_openssh-sftp-server=y
-# === 新增：SSL 证书与 Web HTTPS 支持 ===
+# === 新增：SSL 证书与 Web HTTPS 兼容（使用 OpenSSL 方案） ===
 CONFIG_PACKAGE_uhttpd-mod-tls=y
-CONFIG_PACKAGE_px5g-standalone=y
+CONFIG_PACKAGE_openssl-util=y
 EOF
 
 if [ "${INCLUDE_MT5700M}" = "true" ]; then
