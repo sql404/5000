@@ -171,11 +171,11 @@ CONFIG_PACKAGE_kmod-tun=y
 EOF
 fi
 
-# ─── 修改：写入 homeproxy-hiddify 的编译配置 ───
+
 if [ "${INCLUDE_HOMEPROXY}" = "true" ]; then
-  echo "启用 HomeProxy-Hiddify"
+  echo "启用 HomeProxy"
   append_config <<'EOF'
-CONFIG_PACKAGE_luci-app-homeproxy-hiddify=y
+CONFIG_PACKAGE_luci-app-homeproxy=y
 EOF
 fi
 
