@@ -69,7 +69,7 @@ if [ "${INCLUDE_MOSDNS}" = "true" ]; then
   install_packages small_package luci-app-mosdns mosdns v2dat geoview
 fi
 
-# ─── 修改：拉取 homeproxy-hiddify 及其依赖 ───
+
 if [ "${INCLUDE_HOMEPROXY}" = "true" ]; then
-  install_packages small_package luci-app-homeproxy-hiddify sing-box
+  install_packages small_package luci-app-homeproxy sing-box
 fi
