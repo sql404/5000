@@ -69,8 +69,7 @@ if [ "${INCLUDE_MOSDNS}" = "true" ]; then
   install_packages small_package luci-app-mosdns mosdns v2dat geoview
 fi
 
-# ─── 修正：为新版 Re:HomeProxy 安装底层编译依赖 ───
+
 if [ "${INCLUDE_HOMEPROXY}" = "true" ]; then
-  echo "Installing dependencies for Re:HomeProxy..."
-  install_packages small_package sing-box luci-base
+  install_packages small_package luci-app-homeproxy sing-box
 fi
