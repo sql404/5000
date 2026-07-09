@@ -166,9 +166,9 @@ if [ "${INCLUDE_PASSWALL2}" = "true" ]; then
   require_config "CONFIG_PACKAGE_kmod-tun"
 fi
 
-# ─── 修改：检查 homeproxy-hiddify 是否成功勾选 ───
+
 if [ "${INCLUDE_HOMEPROXY}" = "true" ]; then
-  require_config "CONFIG_PACKAGE_luci-app-homeproxy-hiddify"
+  require_config "CONFIG_PACKAGE_luci-app-homeproxy"
 fi
 
 if [ "${INCLUDE_MOSDNS}" = "true" ]; then
