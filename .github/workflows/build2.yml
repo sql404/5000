@@ -75,7 +75,7 @@ on:
         type: boolean
         default: true
 
-# ─── 新增每周定时编译配置 ───
+  # ─── 修正：每周定时编译配置，与 workflow_dispatch 平级 ───
   schedule:
     - cron: '15 20 * * 4'
 
