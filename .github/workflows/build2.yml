@@ -75,7 +75,7 @@ on:
         type: boolean
         default: true
 
-  # ─── 修正：每周定时编译配置，与 workflow_dispatch 平级 ───
+  # ─── 每周定时编译配置 ───
   schedule:
     - cron: '15 20 * * 4'
 
@@ -171,6 +171,7 @@ jobs:
 
       - name: 准备 OpenWrt 源码
         env:
+          OPENWRT_REF: ${{ inputs.openwrt_ref || 'v25.12.5' }}
           INCLUDE_QMODEM_ORIGINAL: ${{ inputs.qmodem_original && 'true' || 'false' }}
           INCLUDE_QMODEM_NEXT: ${{ inputs.qmodem_next && 'true' || 'false' }}
           INCLUDE_PASSWALL2: ${{ inputs.passwall2 && 'true' || 'false' }}
@@ -180,7 +181,7 @@ jobs:
           INCLUDE_VNSTAT: ${{ inputs.vnstat && 'true' || 'false' }}
           INCLUDE_MT5700M: ${{ inputs.mt5700m && 'true' || 'false' }}
         run: |
-          bash ./scripts/prepare-source.sh "${{ inputs.openwrt_ref }}"
+          bash ./scripts/prepare-source.sh "${{ env.OPENWRT_REF }}"
           if [ -n "${OPENWRT_SRC_DIR}" ]; then
             rm -rf openwrt
             ln -s "${OPENWRT_SRC_DIR}" openwrt
@@ -232,6 +233,33 @@ jobs:
           INCLUDE_VNSTAT: ${{ inputs.vnstat && 'true' || 'false' }}
           INCLUDE_MT5700M: ${{ inputs.mt5700m && 'true' || 'false' }}
         run: bash ./scripts/apply-package-options.sh
+
+      # ─── 科学诊断核心：查明依赖冲突的真凶 ───
+      - name: 诊断 luci-app-homeproxy 依赖
+        working-directory: openwrt
+        run: |
+          echo "========================================================="
+          echo " 1. 查看 1andrevich/homeproxy-hiddify Makefile 依赖定义 "
+          echo "========================================================="
+          if [ -f "package/luci-app-homeproxy/Makefile" ]; then
+            cat package/luci-app-homeproxy/Makefile | grep -E "DEPENDS|PKG_NAME|PKG_VERSION"
+          else
+            echo "错误：未在 package/luci-app-homeproxy 下找到 Makefile！"
+          fi
+          
+          echo "========================================================="
+          echo " 2. 让编译系统倾倒出该包的 dumpinfo 树 "
+          echo "========================================================="
+          make package/luci-app-homeproxy/dumpinfo || echo "无法获取该包的编译项信息，上游依赖链可能已断裂。"
+          
+          echo "========================================================="
+          echo " 3. 检查全局临时索引树中是否存在该插件 "
+          echo "========================================================="
+          if [ -d "tmp" ]; then
+            grep -rn "luci-app-homeproxy" tmp/ || echo "提示：当前 OpenWrt 编译缓存未索引到该包名。"
+          else
+            echo "tmp 目录尚未生成。"
+          fi
 
       - name: 配置本地下载缓存
         if: ${{ inputs.runner_type == 'self-hosted' }}
