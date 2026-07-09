@@ -24,25 +24,6 @@ inject_luci_theme_argon() {
     git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config.git "${argon_config_dir}"
   fi
 }
-
-# ─── 新增：强制替换为 1andrevich 的 homeproxy-hiddify ───
-inject_homeproxy_hiddify() {
-  local target_dir="${SRC_DIR}/package/luci-app-homeproxy"
-
-  echo "Cleaning up original homeproxy from small_package feed..."
-  # 强制删除大礼包自带的原版目录，防止重名和依赖冲突
-  rm -rf "${SRC_DIR}/package/feeds/small_package/luci-app-homeproxy"
-  rm -rf "${SRC_DIR}/package/feeds/small_package/homeproxy"
-
-  if [ -d "${target_dir}" ]; then
-    echo "Custom homeproxy-hiddify source already exists, skipping clone."
-  else
-    echo "Injecting 1andrevich/homeproxy-hiddify source..."
-    # 强行克隆你指定的 1andrevich 维护的分支，存放在 package 根目录下
-    git clone --depth=1 https://github.com/1andrevich/homeproxy-hiddify.git "${target_dir}"
-  fi
-}
-
 patch_tcping() {
   local makefile="${SRC_DIR}/package/feeds/small_package/tcping/Makefile"
 
@@ -106,7 +87,7 @@ patch_passwall2_nftset_empty_insert() {
 
 # --- 执行区 ---
 inject_luci_theme_argon
-inject_homeproxy_hiddify
+
 patch_tcping
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-pyserial/Makefile" "python-pyserial"
 patch_python_build_backend "${SRC_DIR}/package/feeds/packages/python-websockets/Makefile" "python-websockets"
