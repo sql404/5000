@@ -26,14 +26,14 @@ on:
         default: false
       qmodem_original:
         description: "1. QModem 原版：5G 模块管理"
-        required: true
+        required: false
         type: boolean
-        default: true
+        default: false
       qmodem_next:
         description: "2. QModem Next：新版界面和扩展功能"
         required: true
         type: boolean
-        default: false
+        default: true
       upnp:
         description: "3. UPnP：端口自动映射"
         required: true
